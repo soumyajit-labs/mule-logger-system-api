@@ -120,7 +120,7 @@ output application/json
         </error-handler>
     </flow>
     <flow name="get:\account:mule-logger-system-api-config">
-        <logger level="INFO" message='#["This is an INFO logger. Starting the GET:/accounts flow. Incoming Account Id : " ++ (attributes.queryParams.accountId default "X")]' doc:name="INFO - Starting Logger" category="com.galactica.logger"/>
+        <logger level="INFO" message="#[&quot;This is an INFO logger. Starting the GET:/accounts flow. Incoming Account Id : &quot; ++ (attributes.queryParams.accountId default &quot;X&quot;) ++ &quot; || Client Id : &quot; ++ (attributes.headers['client_id'] default &quot;UNKNOWN&quot;)]" doc:name="INFO - Starting Logger" category="com.galactica.logger"/>
 		<ee:transform doc:name="Accounts" doc:id="65689f13-af99-48db-b120-2b42170d7ddc" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
@@ -167,7 +167,7 @@ payload filter ((i,x) -> ((i.accountId default "") == (attributes.queryParams.ac
 		<logger level="INFO" doc:name="INFO - Ending Logger" doc:id="ec7194c2-9cde-43f7-8a27-933dd8dd83e0" message='#["This is the ending INFO logger for GET:/accounts flow."]' category="com.galactica.logger" />
     </flow>
     <flow name="get:\contact:mule-logger-system-api-config">
-		<logger level="INFO" doc:name="INFO - Starting Logger" doc:id="4f3c015f-8421-4e02-92dd-4cbef0ba8b73" message='#["This is an INFO logger. Starting the GET:/contacts flow. Incoming Contact Id : " ++ (attributes.queryParams.contactId default "X")]' category="com.galactica.logger" />
+		<logger level="INFO" doc:name="INFO - Starting Logger" doc:id="4f3c015f-8421-4e02-92dd-4cbef0ba8b73" message="#[&quot;This is an INFO logger. Starting the GET:/contacts flow. Incoming Contact Id : &quot; ++ (attributes.queryParams.contactId default &quot;X&quot;) ++ &quot; || Client Id : &quot; ++ (attributes.headers['client_id'] default &quot;UNKNOWN&quot;)]" category="com.galactica.logger" />
 		<ee:transform doc:name="Contacts" doc:id="38d5ae27-ccbe-4911-994e-b4ea4e6a1035" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
