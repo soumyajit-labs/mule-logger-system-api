@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
+    <flow name="mule-logger-system-api-main">
+        <http:listener config-ref="mule-logger-system-api-httpListenerConfig" path="/api/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:router config-ref="mule-logger-system-api-config"/>
+        <error-handler>
+            <on-error-propagate type="APIKIT:BAD_REQUEST">
+                <ee:transform doc:name="Transform Message">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Bad request"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">400</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform doc:name="Transform Message">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED">
+                <ee:transform doc:name="Transform Message">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Method not allowed"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">405</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_ACCEPTABLE">
+                <ee:transform doc:name="Transform Message">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Not acceptable"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">406</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
+                <ee:transform doc:name="Transform Message">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Unsupported media type"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">415</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_IMPLEMENTED">
+                <ee:transform doc:name="Transform Message">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Not Implemented"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">501</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+        </error-handler>
+    </flow>
+    <flow name="mule-logger-system-api-console">
+        <http:listener config-ref="mule-logger-system-api-httpListenerConfig" path="/console/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="mule-logger-system-api-config"/>
+        <error-handler>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform doc:name="Transform Message">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+        </error-handler>
+    </flow>
+    <flow name="get:\account:mule-logger-system-api-config">
+        <logger level="INFO" message='#["This is an INFO logger. Starting the GET:/accounts flow. Incoming Account Id : " ++ (attributes.queryParams.accountId default "X")]' doc:name="INFO - Starting Logger" category="com.galactica.logger"/>
+		<ee:transform doc:name="Accounts" doc:id="65689f13-af99-48db-b120-2b42170d7ddc" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+[
+	{
+		accountId: "1",
+		name: "Joe",
+		address: "Metapark, Cal",
+		phone: "+1-12345670"
+	},
+	{
+		accountId: "2",
+		name: "Ben",
+		address: "Infinity Circle, Cal",
+		phone: "+91-12097476574"
+	},
+	{
+		accountId: "3",
+		name: "Alan",
+		address: "Nirvana, Cal",
+		phone: "+1-999999999"
+	},
+	{
+		accountId: "4",
+		name: "Kurt",
+		address: "Aberdeen",
+		phone: "+1-77777777777"
+	}
+]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="DEBUG" doc:name="DEBUG - Payload logger" doc:id="d03992a5-e2d9-456f-8797-df370c5dca69" message='Accounts Overall Payload : #[payload default []]' category="com.galactica.logger" />
+		<ee:transform doc:name="Filtered Payload" doc:id="639b5011-15e3-404c-aea2-8a1823f4d59e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload filter ((i,x) -> ((i.accountId default "") == (attributes.queryParams.accountId default "")))]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="DEBUG" doc:name="DEBUG - Response logger" doc:id="a9a6e58e-6bc0-430b-87c8-c83a89d21e44" message="Response Payload : #[payload default []]" category="com.galactica.logger" />
+		<logger level="INFO" doc:name="INFO - Ending Logger" doc:id="ec7194c2-9cde-43f7-8a27-933dd8dd83e0" message='#["This is the ending INFO logger for GET:/accounts flow."]' category="com.galactica.logger" />
+    </flow>
+    <flow name="get:\contact:mule-logger-system-api-config">
+		<logger level="INFO" doc:name="INFO - Starting Logger" doc:id="4f3c015f-8421-4e02-92dd-4cbef0ba8b73" message='#["This is an INFO logger. Starting the GET:/contacts flow. Incoming Contact Id : " ++ (attributes.queryParams.contactId default "X")]' category="com.galactica.logger" />
+		<ee:transform doc:name="Contacts" doc:id="38d5ae27-ccbe-4911-994e-b4ea4e6a1035" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+[
+	{
+		contactId: "1",
+		name: "Alex",
+		email: "alex@rediff.com",
+		phone: "+1-YYYYYYYY"
+	},
+	{
+		contactId: "2",
+		name: "Nathan",
+		email: "nathan@orkut.com",
+		phone: "+91-XXXXXXXX"
+	},
+	{
+		contactId: "3",
+		name: "Kayuk",
+		email: "kayuk@outlook.com",
+		phone: "+1-TTTTTTTTT"
+	},
+	{
+		contactId: "4",
+		name: "Michael",
+		email: "michael@outlook.com",
+		phone: "+1-CCCCCCCCC"
+	}
+]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="DEBUG" doc:name="DEBUG - Payload logger" doc:id="11d7fbbc-ade0-4977-ae4e-af8a38a6c473" message="Contacts Overall Payload : #[payload default []]" category="com.galactica.logger" />
+		<ee:transform doc:name="Filtered Payload" doc:id="2eff5809-84b4-4a38-b6fb-5661d303907b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload filter ((i,x) -> ((i.contactId default "") == (attributes.queryParams.contactId default "")))]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="DEBUG" doc:name="DEBUG - Response logger" doc:id="a3e7a6ce-26d5-4f46-8902-37e0f102a913" message="Response Payload : #[payload default []]" category="com.galactica.logger" />
+		<logger level="INFO" doc:name="INFO - Ending Logger" doc:id="17393f89-1f31-4de4-83a3-c8b9ced1f154" message='#["This is the ending INFO logger for GET:/contacts flow."]' category="com.galactica.logger" />
+    </flow>
+</mule>
