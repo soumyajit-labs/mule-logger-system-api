@@ -17,11 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: dev
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/download-artifact@v3
-        with:
-          name: secret-operator
-      - name: Display structure of downloaded files
-        run: ls -R
-      - name: Run secrets-operator-script
-        run: python secrets-operator-script.py --arg1 'mule-logger-sapi'
+      - name: List Releases
+        run: gh release list --repo soumyajit-labs/common-settings
+        env:
+          GITHUB_TOKEN: ${{ secrets.HUB_REPO_TOKEN }}
