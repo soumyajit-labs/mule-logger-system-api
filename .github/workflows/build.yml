@@ -21,6 +21,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: secret-operator
-          path: secrets-operator-script.py
+      - name: Display structure of downloaded files
+        run: ls -R
       - name: Run secrets-operator-script
         run: python secrets-operator-script.py --arg1 'mule-logger-sapi'
