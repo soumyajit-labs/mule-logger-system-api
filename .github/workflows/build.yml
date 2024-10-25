@@ -23,7 +23,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.HUB_REPO_TOKEN }}
       
       - name: Fetch asset
-        run: gh release download release -R soumyajit-labs/common-settings -D
+        run: gh release download --repo soumyajit-labs/common-settings --pattern '*.py'
         env:
           GITHUB_TOKEN: ${{ secrets.HUB_REPO_TOKEN }}
 
