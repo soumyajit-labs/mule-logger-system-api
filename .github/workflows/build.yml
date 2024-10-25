@@ -12,6 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Print an Org variable
-      run: echo "CONNECTEDAPPPASS value: ${{ secrets.CONNECTEDAPPPASS }}"
+      run: echo "CONNECTEDAPPPASS value is ${{ secrets.CONNECTEDAPPPASS }}"
     - name: Print an Env variable
-      run: echo "REGION value: ${{ secrets.REGION }}"
+      run: echo "REGION value is ${{ secrets.REGION }}"
