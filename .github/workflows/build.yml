@@ -1,4 +1,3 @@
-
 name: Build and Deploy to Anypoint Platform
 
 on:
@@ -7,26 +6,21 @@ on:
     - dev
     - prod
 
+env:
+  ENV: ${{ vars.ENV }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: us-east-1
 
 jobs:
   variable-printer:
     runs-on: ubuntu-latest
-    environment: |
-      if [ endsWith(github.ref, '/dev') ]; then
-        echo "ENVIRONMENT=dev" >> $GITHUB_ENV
-      elif [ endsWith(github.ref, '/prod') ]; then
-        echo "ENVIRONMENT=prod" >> $GITHUB_ENV
-      else
-        echo "ENVIRONMENT=default" >> $GITHUB_ENV
-      fi
-    env:
-      ENV: ${{ vars.ENV }}
+    environment: dev
     steps:
-    - name: Print an Org variable
-      run: echo "CONNECTEDAPPPASS value is ${{ secrets.CONNECTEDAPPPASS }}"
-    - name: Print an Env variable
-      run: echo "DEV ENV value is ${{ env.ENV }}"
-    - name: Print Github Context
-      run: echo "${{ github.ref }}"
-    - name: Print Github Current Env
-      run: echo "${{ env.ENVIRONMENT }}"
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
+        with:
+          name: packaged-secrets-operator-script
+          path: secrets-operator-script.py
+      - name: Run secrets-operator-script.py
+        run: python secrets-operator-script.py --arg1 'mule-logger-sapi'
