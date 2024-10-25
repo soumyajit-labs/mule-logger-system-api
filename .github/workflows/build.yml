@@ -1,1 +1,15 @@
 
+name: Build and Deploy to Anypoint Platform
+
+on:
+  push:
+    branches:
+    - dev
+    - prod
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Print an Org variable
+      uses: echo "${{ vars.CONNECTEDAPPPASS }}"
