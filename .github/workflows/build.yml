@@ -21,3 +21,11 @@ jobs:
         run: gh release list --repo soumyajit-labs/common-settings
         env:
           GITHUB_TOKEN: ${{ secrets.HUB_REPO_TOKEN }}
+      
+      - name: Fetch asset
+        run: gh release download --repo soumyajit-labs/common-settings
+        env:
+          GITHUB_TOKEN: ${{ secrets.HUB_REPO_TOKEN }}
+
+      - name: See what we downloaded
+        run: ls
