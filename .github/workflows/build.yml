@@ -7,8 +7,6 @@ on:
     - dev
     - prod
 
-env:
-  ENV: ${{ vars.ENV }}
 
 jobs:
   variable-printer:
@@ -21,6 +19,8 @@ jobs:
       else
         echo "ENVIRONMENT=default" >> $GITHUB_ENV
       fi
+    env:
+      ENV: ${{ vars.ENV }}
     steps:
     - name: Print an Org variable
       run: echo "CONNECTEDAPPPASS value is ${{ secrets.CONNECTEDAPPPASS }}"
