@@ -14,9 +14,12 @@ jobs:
   variable-printer:
     runs-on: ubuntu-latest
     environment: |
-      if [ endsWith(github.ref, '/dev') ]; then "dev"
-      elif [ endsWith(github.ref, '/prod') ]; then "prod"
-      else "unknown"
+      if [ endsWith(github.ref, '/dev') ]; then
+        echo "ENVIRONMENT=dev" >> $GITHUB_ENV
+      elif [ endsWith(github.ref, '/prod') ]; then
+        echo "ENVIRONMENT=prod" >> $GITHUB_ENV
+      else
+        echo "ENVIRONMENT=default" >> $GITHUB_ENV
       fi
     steps:
     - name: Print an Org variable
@@ -25,3 +28,5 @@ jobs:
       run: echo "DEV ENV value is ${{ env.ENV }}"
     - name: Print Github Context
       run: echo "${{ github.ref }}"
+    - name: Print Github Current Env
+      run: echo "${{ env.ENVIRONMENT }}"
