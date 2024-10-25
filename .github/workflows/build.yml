@@ -13,8 +13,12 @@ env:
 jobs:
   variable-printer:
     runs-on: ubuntu-latest
+    environment: dev
     steps:
     - name: Print an Org variable
       run: echo "CONNECTEDAPPPASS value is ${{ secrets.CONNECTEDAPPPASS }}"
     - name: Print an Env variable
       run: echo "DEV ENV value is ${{ env.ENV }}"
+    - name: Print Github Context
+      run: echo "${{ github.ref }}"
+
