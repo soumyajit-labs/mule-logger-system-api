@@ -8,10 +8,10 @@ on:
     - prod
 
 jobs:
-  test:
+  variable-printer:
     runs-on: ubuntu-latest
     steps:
     - name: Print an Org variable
-      run: echo ${{vars.CONNECTEDAPPPASS}}
+      run: echo "CONNECTEDAPPPASS value: ${{ secrets.CONNECTEDAPPPASS }}"
     - name: Print an Env variable
-      run: echo ${{secrets.REGION}}
+      run: echo "REGION value: ${{ secrets.REGION }}"
