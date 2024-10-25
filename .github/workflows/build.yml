@@ -17,4 +17,4 @@ jobs:
     - name: Print an Org variable
       run: echo "CONNECTEDAPPPASS value is ${{ secrets.CONNECTEDAPPPASS }}"
     - name: Print an Env variable
-      run: echo "DEV ENV value is $ENV"
+      run: echo "DEV ENV value is ${{ env.ENV }}"
