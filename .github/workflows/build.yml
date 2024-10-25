@@ -13,7 +13,11 @@ env:
 jobs:
   variable-printer:
     runs-on: ubuntu-latest
-    environment: dev
+    environment: |
+      if [ endsWith(github.ref, '/dev') ]; then "dev"
+      elif [ endsWith(github.ref, '/prod') ]; then "prod"
+      else "unknown"
+      fi
     steps:
     - name: Print an Org variable
       run: echo "CONNECTEDAPPPASS value is ${{ secrets.CONNECTEDAPPPASS }}"
@@ -21,4 +25,3 @@ jobs:
       run: echo "DEV ENV value is ${{ env.ENV }}"
     - name: Print Github Context
       run: echo "${{ github.ref }}"
-
