@@ -17,6 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: dev
     steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v3
+        
       - name: Checkout common-settings repository
         uses: actions/checkout@v3
         with:
@@ -39,3 +42,12 @@ jobs:
 
       - name: Use the downloaded file
         run: python tmp/artifacts/secret-operator.py ${{ env.AWS_DEFAULT_REGION }} 'mule-logger-sapi' 'dev'
+
+  package-deployer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v3
+
+      - name: Echo resources
+        run: ls -la src/main/resources
