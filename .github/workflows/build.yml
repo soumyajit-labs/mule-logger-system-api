@@ -20,4 +20,4 @@ jobs:
       - uses: actions/checkout@v3
         with:
           repository: soumyajit-labs/common-settings
-      - run: python common-settings/secrets-appender/secret-operator.py --arg1 'mule-logger-sapi'
+      - run: python common-settings/tree/main/secrets-appender/secret-operator.py --arg1 'mule-logger-sapi'
