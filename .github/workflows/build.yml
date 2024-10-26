@@ -104,4 +104,4 @@ jobs:
            -Dmule.workerType="Micro" \
            -Dapplication.name="dev-mule-logger-system-api" \
            -Dmule.region=us-east-2 \
-           -Ddecryption.key="$KEY"
+           -Dmule.encryptionKey="$KEY"
