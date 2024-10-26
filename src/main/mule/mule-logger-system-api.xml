@@ -121,7 +121,7 @@ output application/json
     </flow>
     <flow name="get:\account:mule-logger-system-api-config">
         <logger level="INFO" message="#[&quot;This is an INFO logger. Starting the GET:/accounts flow. Incoming Account Id : &quot; ++ (attributes.queryParams.accountId default &quot;X&quot;) ++ &quot; || Client Id : &quot; ++ (attributes.headers['client_id'] default &quot;UNKNOWN&quot;)]" doc:name="INFO - Starting Logger" category="com.galactica.logger"/>
-		<ee:transform doc:name="Accounts" doc:id="65689f13-af99-48db-b120-2b42170d7ddc" >
+		<ee:transform doc:name="Accounts" doc:id="cf76c5de-b09f-4d43-b18b-875dc20618a7" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -154,8 +154,8 @@ output application/json
 ]]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="DEBUG" doc:name="DEBUG - Payload logger" doc:id="d03992a5-e2d9-456f-8797-df370c5dca69" message='Accounts Overall Payload : #[payload default []]' category="com.galactica.logger" />
-		<ee:transform doc:name="Filtered Payload" doc:id="639b5011-15e3-404c-aea2-8a1823f4d59e" >
+		<logger level="DEBUG" doc:name="DEBUG - Payload logger" doc:id="b8462a0f-2d14-43af-a81c-795ab1e373cb" message='Accounts Overall Payload : #[payload default []]' category="com.galactica.logger" />
+		<ee:transform doc:name="Filtered Payload" doc:id="5626287d-58fd-47d3-924d-86cb58d691d4" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -163,7 +163,7 @@ output application/json
 payload filter ((i,x) -> ((i.accountId default "") == (attributes.queryParams.accountId default "")))]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<ee:transform doc:name="vars.securedprops" doc:id="de40326f-8ad3-4b07-a9dc-9ab9f9314bb6" >
+		<ee:transform doc:name="vars.securedprops" doc:id="5dc1a366-faaf-4f62-ba6a-a2294166c5c9" >
 			<ee:message >
 			</ee:message>
 			<ee:variables >
@@ -178,13 +178,13 @@ output application/json
 }]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-		<logger level="INFO" doc:name="INFO - vars.securedprops" doc:id="64711d66-4c41-4feb-9e8a-cd0429799030" message='vars.securedprops : #[vars.securedprops]' category="com.galactica.logger" />
-		<logger level="DEBUG" doc:name="DEBUG - Response logger" doc:id="a9a6e58e-6bc0-430b-87c8-c83a89d21e44" message="Response Payload : #[payload default []]" category="com.galactica.logger" />
-		<logger level="INFO" doc:name="INFO - Ending Logger" doc:id="ec7194c2-9cde-43f7-8a27-933dd8dd83e0" message='#["This is the ending INFO logger for GET:/accounts flow."]' category="com.galactica.logger" />
+		<logger level="INFO" doc:name="INFO - vars.securedprops" doc:id="b20fccfb-0be0-4d2e-b5e5-3557f240de78" message='vars.securedprops : #[vars.securedprops]' category="com.galactica.logger" />
+		<logger level="DEBUG" doc:name="DEBUG - Response logger" doc:id="86fdb4d0-c907-4d29-b147-cc0b8474f31a" message="Response Payload : #[payload default []]" category="com.galactica.logger" />
+		<logger level="INFO" doc:name="INFO - Ending Logger" doc:id="417c91d6-703c-4bbd-98e4-0d4dc5f69b96" message='#["This is the ending INFO logger for GET:/accounts flow."]' category="com.galactica.logger" />
     </flow>
     <flow name="get:\contact:mule-logger-system-api-config">
-		<logger level="INFO" doc:name="INFO - Starting Logger" doc:id="4f3c015f-8421-4e02-92dd-4cbef0ba8b73" message="#[&quot;This is an INFO logger. Starting the GET:/contacts flow. Incoming Contact Id : &quot; ++ (attributes.queryParams.contactId default &quot;X&quot;) ++ &quot; || Client Id : &quot; ++ (attributes.headers['client_id'] default &quot;UNKNOWN&quot;)]" category="com.galactica.logger" />
-		<ee:transform doc:name="Contacts" doc:id="38d5ae27-ccbe-4911-994e-b4ea4e6a1035" >
+		<logger level="INFO" doc:name="INFO - Starting Logger" doc:id="09bb50e8-6cb1-4346-bb9e-c1509e65e77f" message="#[&quot;This is an INFO logger. Starting the GET:/contacts flow. Incoming Contact Id : &quot; ++ (attributes.queryParams.contactId default &quot;X&quot;) ++ &quot; || Client Id : &quot; ++ (attributes.headers['client_id'] default &quot;UNKNOWN&quot;)]" category="com.galactica.logger" />
+		<ee:transform doc:name="Contacts" doc:id="4b77e5dd-179d-47a9-a722-a3ff86d74603" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -217,8 +217,8 @@ output application/json
 ]]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="DEBUG" doc:name="DEBUG - Payload logger" doc:id="11d7fbbc-ade0-4977-ae4e-af8a38a6c473" message="Contacts Overall Payload : #[payload default []]" category="com.galactica.logger" />
-		<ee:transform doc:name="Filtered Payload" doc:id="2eff5809-84b4-4a38-b6fb-5661d303907b" >
+		<logger level="DEBUG" doc:name="DEBUG - Payload logger" doc:id="39db9e79-1c59-4266-b625-14b182f6de47" message="Contacts Overall Payload : #[payload default []]" category="com.galactica.logger" />
+		<ee:transform doc:name="Filtered Payload" doc:id="ea4eb40d-3dd3-437b-8a5e-ee4f8f811877" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -226,7 +226,7 @@ output application/json
 payload filter ((i,x) -> ((i.contactId default "") == (attributes.queryParams.contactId default "")))]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="DEBUG" doc:name="DEBUG - Response logger" doc:id="a3e7a6ce-26d5-4f46-8902-37e0f102a913" message="Response Payload : #[payload default []]" category="com.galactica.logger" />
-		<logger level="INFO" doc:name="INFO - Ending Logger" doc:id="17393f89-1f31-4de4-83a3-c8b9ced1f154" message='#["This is the ending INFO logger for GET:/contacts flow."]' category="com.galactica.logger" />
+		<logger level="DEBUG" doc:name="DEBUG - Response logger" doc:id="e228f351-e8e6-4a2c-b349-67e1094c6914" message="Response Payload : #[payload default []]" category="com.galactica.logger" />
+		<logger level="INFO" doc:name="INFO - Ending Logger" doc:id="7f3d689e-fd7e-4b41-a650-00437f3a293b" message='#["This is the ending INFO logger for GET:/contacts flow."]' category="com.galactica.logger" />
     </flow>
 </mule>

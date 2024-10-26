@@ -79,8 +79,9 @@
 			<version>1.11.0</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
+
 		<dependency>
-			<groupId>1e2009bc-14f4-4d1d-a90b-a3f4fb60d68f</groupId>
+			<groupId>a70cf01e-09a0-4ffb-9409-f0c30de251e2</groupId>
 			<artifactId>mule-logger-system-api</artifactId>
 			<version>1.0.0</version>
 			<classifier>raml</classifier>
