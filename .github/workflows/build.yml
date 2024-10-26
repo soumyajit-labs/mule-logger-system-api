@@ -31,7 +31,7 @@ jobs:
         run: |
           mkdir -p tmp/artifacts
           cp common-settings/secrets-appender/secret-operator.py tmp/artifacts/
-          cp common-settings/deploy-assets/settings.xml tmp/artifacts/
+          cp common-settings/deploy-assets/settings.xml .maven/
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -47,6 +47,9 @@ jobs:
       - name: Echo resources
         run: ls -la src/main/resources
 
+      - name: Echo settings-xml presence
+        run: ls -la .maven
+        
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
@@ -65,7 +68,7 @@ jobs:
         env:
           connectedapp_user: ${{ secrets.CONNECTEDAPPUSER }}
           connectedapp_pass: ${{ secrets.CONNECTEDAPPPASS }}
-        run: mvn -B package --settings tmp/artifacts/settings.xml --file pom.xml -DskipMunitTests
+        run: mvn -B package --settings .maven/settings.xml --file pom.xml -DskipMunitTests
 
       - name: Stamp artifact file name with commit hash
         run: |
