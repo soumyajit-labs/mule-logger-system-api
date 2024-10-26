@@ -19,6 +19,9 @@ jobs:
     steps:
       - name: Checkout this repository
         uses: actions/checkout@v3
+      
+      - name: List Files
+        run: ls -la
         
       - name: Checkout common-settings repository
         uses: actions/checkout@v3
@@ -42,3 +45,6 @@ jobs:
 
       - name: Use the downloaded file
         run: python tmp/artifacts/secret-operator.py ${{ env.AWS_DEFAULT_REGION }} 'mule-logger-sapi' 'dev'
+
+      - name: List Files (post security addition)
+        run: ls -la
