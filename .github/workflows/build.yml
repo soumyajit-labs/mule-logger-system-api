@@ -65,8 +65,7 @@ jobs:
         env:
           connectedapp_user: ${{ secrets.CONNECTEDAPPUSER }}
           connectedapp_pass: ${{ secrets.CONNECTEDAPPPASS }}
-          KEY: ${{ secrets.ENCR_KEY }}
-        run: mvn -B package --file pom.xml -DskipMunitTests
+        run: mvn -B package --settings tmp/artifacts/settings.xml --file pom.xml -DskipMunitTests
 
       - name: Stamp artifact file name with commit hash
         run: |
