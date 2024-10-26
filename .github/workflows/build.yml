@@ -38,7 +38,7 @@ jobs:
           python-version: '3.x'
 
       - name: Install Python dependencies
-        run: pip install boto3
+        run: pip install boto3 python-dotenv
 
       - name: Use the downloaded file
         run: python tmp/artifacts/secret-operator.py --arg1 'mule-logger-sapi'
