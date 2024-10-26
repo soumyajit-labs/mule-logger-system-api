@@ -17,8 +17,18 @@ jobs:
     runs-on: ubuntu-latest
     environment: dev
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout this repository
+        uses: actions/checkout@v3
+        
+      - name: Checkout common-settings repository
+        uses: actions/checkout@v3
         with:
           repository: soumyajit-labs/common-settings
+          path: common-settings
           token: ${{ secrets.HUB_REPO_TOKEN }}
-      - run: python common-settings/secrets-appender/secret-operator.py --arg1 'mule-logger-sapi'
+
+      - name: Copy the secrets-operator-py file
+        run: cp common-settings/secrets-appender/secret-operator.py ./artifacts/
+      
+      - name: Use the downloaded file
+        run: python ./artifacts/secret-operator.py --arg1 'mule-logger-sapi'
