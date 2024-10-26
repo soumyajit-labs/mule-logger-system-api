@@ -17,12 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: dev
     steps:
-      - name: Checkout this repository
-        uses: actions/checkout@v3
-      
-      - name: List Files (Right after checkout)
-        run: ls -la src/main/resources
-        
       - name: Checkout common-settings repository
         uses: actions/checkout@v3
         with:
@@ -30,7 +24,7 @@ jobs:
           path: common-settings
           token: ${{ secrets.HUB_REPO_TOKEN }}
 
-      - name: Copy the secrets-operator-py file
+      - name: Copy the secrets-operator-py file locally
         run: |
           mkdir -p tmp/artifacts
           cp common-settings/secrets-appender/secret-operator.py tmp/artifacts/
@@ -45,6 +39,3 @@ jobs:
 
       - name: Use the downloaded file
         run: python tmp/artifacts/secret-operator.py ${{ env.AWS_DEFAULT_REGION }} 'mule-logger-sapi' 'dev'
-
-      - name: List Files (post secured properties addition)
-        run: ls -la src/main/resources
