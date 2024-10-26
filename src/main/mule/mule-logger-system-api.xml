@@ -163,6 +163,22 @@ output application/json
 payload filter ((i,x) -> ((i.accountId default "") == (attributes.queryParams.accountId default "")))]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<ee:transform doc:name="vars.securedprops" doc:id="de40326f-8ad3-4b07-a9dc-9ab9f9314bb6" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="securedprops" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"user.value": p('secure::user.value'),
+	"user.pass": p('secure::user.pass'),
+	"user.sing": p('secure::user.sing'),
+	"user.genre": p('secure::user.genre')
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<logger level="INFO" doc:name="INFO - vars.securedprops" doc:id="64711d66-4c41-4feb-9e8a-cd0429799030" message='vars.securedprops : #[vars.securedprops]' category="com.galactica.logger" />
 		<logger level="DEBUG" doc:name="DEBUG - Response logger" doc:id="a9a6e58e-6bc0-430b-87c8-c83a89d21e44" message="Response Payload : #[payload default []]" category="com.galactica.logger" />
 		<logger level="INFO" doc:name="INFO - Ending Logger" doc:id="ec7194c2-9cde-43f7-8a27-933dd8dd83e0" message='#["This is the ending INFO logger for GET:/accounts flow."]' category="com.galactica.logger" />
     </flow>
