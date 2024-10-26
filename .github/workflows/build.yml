@@ -107,6 +107,6 @@ jobs:
            -Dmule.workers="1" \
            -Dmule.env="dev" \
            -Dmule.workerType="Micro" \
-           -Dapplication.name="dev-mule-logger-system-api" \
+           -Dapplication.name="dev-mule-loggerx-system-api" \
            -Dmule.region=us-east-2 \
            -Dmule.encryptionKey="$KEY"
