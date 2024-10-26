@@ -13,7 +13,7 @@ env:
   AWS_DEFAULT_REGION: us-east-1
 
 jobs:
-  variable-printer:
+  run-py-script:
     runs-on: ubuntu-latest
     environment: dev
     steps:
@@ -31,6 +31,14 @@ jobs:
         run: |
           mkdir -p tmp/artifacts
           cp common-settings/secrets-appender/secret-operator.py tmp/artifacts/
-      
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install Python dependencies
+        run: pip install boto3
+
       - name: Use the downloaded file
         run: python tmp/artifacts/secret-operator.py --arg1 'mule-logger-sapi'
