@@ -31,6 +31,7 @@ jobs:
         run: |
           mkdir -p tmp/artifacts
           cp common-settings/secrets-appender/secret-operator.py tmp/artifacts/
+          mkdir -p .maven
           cp common-settings/deploy-assets/settings.xml .maven/
 
       - name: Set up Python
