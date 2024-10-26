@@ -90,6 +90,8 @@ jobs:
         env:
           USERNAME: ${{ secrets.CONNECTEDAPPUSER }}
           PASSWORD: ${{ secrets.CONNECTEDAPPPASS }}
+          ORGID: ${{ secrets.ORGCLIENTID }}
+          ORGSECRET: ${{ secrets.ORGCLIENTSECRET }}
           KEY: ${{ secrets.ENCR_KEY }}
         run: |
           artifactName=$(ls *.jar | head -1)
@@ -97,8 +99,8 @@ jobs:
            -Dmule.artifact=$artifactName \
            -Danypoint.username="$USERNAME" \
            -Danypoint.password="$PASSWORD" \
-           -Dorg.client.id="$ORGCLIENTID" \
-           -Dorg.client.secret="$ORGCLIENTSECRET" \
+           -Dorg.client.id="$ORGID" \
+           -Dorg.client.secret="$ORGSECRET" \
            -Dmule.workers="1" \
            -Dmule.env="dev" \
            -Dmule.workerType="Micro" \
