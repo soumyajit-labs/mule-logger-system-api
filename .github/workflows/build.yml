@@ -28,7 +28,9 @@ jobs:
           token: ${{ secrets.HUB_REPO_TOKEN }}
 
       - name: Copy the secrets-operator-py file
-        run: cp common-settings/secrets-appender/secret-operator.py ./artifacts/
+        run: |
+          mkdir -p tmp/artifacts
+          cp common-settings/secrets-appender/secret-operator.py tmp/artifacts/
       
       - name: Use the downloaded file
-        run: python ./artifacts/secret-operator.py --arg1 'mule-logger-sapi'
+        run: python tmp/artifacts/secret-operator.py --arg1 'mule-logger-sapi'
