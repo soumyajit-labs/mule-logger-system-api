@@ -21,9 +21,9 @@ jobs:
 
       - name: Set Environment Variable
         run: |
-          if [[ "${{ github.ref }}" == "refs/heads/prod" ]]; then
+          if [[ "${{ github.ref }}" == "refs/heads/prod" ]] then
             echo "ENVIRONMENT=prod" >> $GITHUB_ENV
-          elif [[ "${{ github.ref }}" == "refs/heads/dev"]]; then
+          elif [[ "${{ github.ref }}" == "refs/heads/dev"]] then
             echo "ENVIRONMENT=dev" >> $GITHUB_ENV
           else
             echo "ENVIRONMENT=development" >> $GITHUB_ENV
