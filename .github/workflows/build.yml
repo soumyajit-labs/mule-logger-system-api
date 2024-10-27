@@ -27,7 +27,12 @@ jobs:
           else
             echo "ENVIRONMENT=feature" >> $GITHUB_ENV
           fi
-      
+
+      - name: Set Repository Name
+        run: |
+          REPO=$(echo ${GITHUB_REPOSITORY} | awk -F '/' '{print $NF}')
+          echo "REPO_NAME=$REPO" >> $GITHUB_ENV
+          
       - name: Checkout common-settings repository
         uses: actions/checkout@v3
         with:
@@ -51,9 +56,7 @@ jobs:
         run: pip install boto3 python-dotenv
 
       - name: Use the PyDriver file
-        run: |
-          REPO_NAME=$(echo ${GITHUB_REPOSITORY} | awk -F '/' '{print $NF}')
-          python tmp/artifacts/secret-operator.py ${{ env.AWS_DEFAULT_REGION }} $REPO_NAME $ENVIRONMENT
+        run: python tmp/artifacts/secret-operator.py ${{ env.AWS_DEFAULT_REGION }} $REPO_NAME $ENVIRONMENT
         
       - name: Cache dependencies
         uses: actions/cache@v3
@@ -89,7 +92,6 @@ jobs:
           ORGID: ${{ secrets.ORGCLIENTID }}
           ORGSECRET: ${{ secrets.ORGCLIENTSECRET }}
           KEY: ${{ secrets.ENCR_KEY }}
-          REPO_NAME: $(echo ${GITHUB_REPOSITORY} | awk -F '/' '{print $NF}')
         run: |
           artifactName=$(ls *.jar | head -1)
           mvn deploy -DskipMunitTests -DmuleDeploy \
