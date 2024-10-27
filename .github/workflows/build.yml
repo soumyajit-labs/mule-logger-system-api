@@ -30,3 +30,7 @@ jobs:
           fi
       - name: Print ENV
         run: echo "$ENVIRONMENT"
+
+      - name: Print Repo Name
+        run: echo "Repository name is ${GITHUB_REPOSITORY}"
+
