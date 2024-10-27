@@ -29,4 +29,4 @@ jobs:
             echo "ENVIRONMENT=development" >> $GITHUB_ENV
           fi
       - name: Print ENV
-        run: echo "$GITHUB_ENV"
+        run: echo $GITHUB_ENV
