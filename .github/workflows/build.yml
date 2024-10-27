@@ -28,9 +28,12 @@ jobs:
           else
             echo "ENVIRONMENT=feature" >> $GITHUB_ENV
           fi
+      
       - name: Print ENV
         run: echo "$ENVIRONMENT"
 
       - name: Print Repo Name
-        run: echo "Repository name is ${GITHUB_REPOSITORY}"
+        run: |
+          REPO_NAME=$(echo ${GITHUB_REPOSITORY} | awk -F '/' '{print $NF}')
+          echo "Repository name is $REPO_NAME"
 
