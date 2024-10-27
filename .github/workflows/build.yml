@@ -12,7 +12,7 @@ env:
   AWS_DEFAULT_REGION: us-east-1
 
 jobs:
-  build-validated-deploy:
+  build-validate-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout this repo
@@ -103,6 +103,6 @@ jobs:
            -Dmule.workers="1" \
            -Dmule.env="dev" \
            -Dmule.workerType="Micro" \
-           -Dapplication.name="$REPO_NAME" \
+           -Dapplication.name="$ENVIRONMENT-$REPO_NAME" \
            -Dmule.region=us-east-2 \
            -Dmule.encryptionKey="$KEY"
