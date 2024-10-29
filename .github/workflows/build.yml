@@ -31,7 +31,7 @@ jobs:
       - name: Set Repository Name
         run: |
           REPO=$(echo ${GITHUB_REPOSITORY} | awk -F '/' '{print $NF}')
-          echo "REPO_NAME=$REPO" >> $GITHUB_ENV
+          echo "REPO_NAME=$ENVIRONMENT-$REPO" >> $GITHUB_ENV
           
       - name: Checkout common-settings repository
         uses: actions/checkout@v3
@@ -103,6 +103,6 @@ jobs:
            -Dmule.workers="1" \
            -Dmule.env="dev" \
            -Dmule.workerType="Micro" \
-           -Dapplication.name="$ENVIRONMENT-$REPO_NAME" \
+           -Dapplication.name="$REPO_NAME" \
            -Dmule.region=us-east-2 \
            -Dmule.encryptionKey="$KEY"
