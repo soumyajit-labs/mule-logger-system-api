@@ -13,7 +13,7 @@ env:
 
 jobs:
   build-validate-and-deploy:
-    runs-on: linux-ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout this repo
         uses: actions/checkout@v3
