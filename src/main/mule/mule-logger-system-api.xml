@@ -120,7 +120,7 @@ output application/json
         </error-handler>
     </flow>
     <flow name="get:\account:mule-logger-system-api-config">
-        <logger level="INFO" message="#[&quot;This is an INFO logger. Starting the GET:/accounts flow. Incoming Account Id : &quot; ++ (attributes.queryParams.accountId default &quot;X&quot;) ++ &quot; || Client Id : &quot; ++ (attributes.headers['client_id'] default &quot;UNKNOWN&quot;)]" doc:name="INFO - Starting Logger" category="com.galactica.logger"/>
+        <logger level="INFO" message="#[&quot;This is an INFO logger / UPDATED. Starting the GET:/accounts flow. Incoming Account Id : &quot; ++ (attributes.queryParams.accountId default &quot;X&quot;) ++ &quot; || Client Id : &quot; ++ (attributes.headers['client_id'] default &quot;UNKNOWN&quot;)]" doc:name="INFO - Starting Logger" category="com.galactica.logger"/>
 		<ee:transform doc:name="Accounts" doc:id="cf76c5de-b09f-4d43-b18b-875dc20618a7" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
