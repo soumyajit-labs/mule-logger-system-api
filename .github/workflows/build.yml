@@ -17,9 +17,6 @@ jobs:
   build-validate-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout this repo
-        uses: actions/checkout@v3
-
       - name: Set Environment Variable
         run: |
           if [[ "${{ github.event_name }}" == "repository_dispatch" ]]; then
@@ -31,7 +28,12 @@ jobs:
           else
             echo "ENVIRONMENT=feature" >> $GITHUB_ENV
           fi
-
+          
+      - name: Checkout this repo
+        uses: actions/checkout@v3
+        with:
+          ref: $ENVIRONMENT
+        
       - name: Set Repository Name
         run: |
           REPO=$(echo ${GITHUB_REPOSITORY} | awk -F '/' '{print $NF}')
