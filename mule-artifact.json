@@ -1,0 +1,4 @@
+{
+  "minMuleVersion": "4.4.0",
+  "secureProperties": ["mule.encryptionKey", "org.client.id", "org.client.secret"]
+}

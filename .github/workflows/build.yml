@@ -1,0 +1,108 @@
+name: Build and Deploy to Anypoint Platform
+
+on:
+  push:
+    branches:
+    - dev
+    - prod
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: us-east-1
+
+jobs:
+  build-validate-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v3
+
+      - name: Set Environment Variable
+        run: |
+          if [[ "${GITHUB_REF##*/}" == "prod" ]]; then
+            echo "ENVIRONMENT=prod" >> $GITHUB_ENV
+          elif [[ "${GITHUB_REF##*/}" == "dev" ]]; then
+            echo "ENVIRONMENT=dev" >> $GITHUB_ENV
+          else
+            echo "ENVIRONMENT=feature" >> $GITHUB_ENV
+          fi
+
+      - name: Set Repository Name
+        run: |
+          REPO=$(echo ${GITHUB_REPOSITORY} | awk -F '/' '{print $NF}')
+          echo "REPO_NAME=$ENVIRONMENT-$REPO" >> $GITHUB_ENV
+          
+      - name: Checkout common-settings repository
+        uses: actions/checkout@v3
+        with:
+          repository: soumyajit-labs/common-settings
+          path: common-settings
+          token: ${{ secrets.HUB_REPO_TOKEN }}
+
+      - name: Copy secrets-operator-py & settings-xml file from common-hub
+        run: |
+          mkdir -p tmp/artifacts
+          cp common-settings/secrets-appender/secret-operator.py tmp/artifacts/
+          mkdir -p .maven
+          cp common-settings/deploy-assets/settings.xml .maven/
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install Python dependencies
+        run: pip install boto3 python-dotenv
+
+      - name: Use the PyDriver file
+        run: python tmp/artifacts/secret-operator.py ${{ env.AWS_DEFAULT_REGION }} $REPO_NAME $ENVIRONMENT
+        
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 8
+      
+      - name: Build with Maven
+        env:
+          connectedapp_user: ${{ secrets.CONNECTEDAPPUSER }}
+          connectedapp_pass: ${{ secrets.CONNECTEDAPPPASS }}
+        run: mvn -B package --settings .maven/settings.xml --file pom.xml -DskipMunitTests
+
+      - name: Stamp artifact file name with commit hash
+        run: |
+          artifactName1=$(ls target/*.jar | head -1)
+          commitHash=$(git rev-parse --short "$GITHUB_SHA")
+          artifactName2=$(ls target/*.jar | head -1 | sed "s/.jar/-$commitHash.jar/g")
+          mv $artifactName1 $artifactName2
+          
+      - name: Deploy to DEV
+        env:
+          USERNAME: ${{ secrets.CONNECTEDAPPUSER }}
+          PASSWORD: ${{ secrets.CONNECTEDAPPPASS }}
+          ORGID: ${{ secrets.ORGCLIENTID }}
+          ORGSECRET: ${{ secrets.ORGCLIENTSECRET }}
+          KEY: ${{ secrets.ENCR_KEY }}
+        run: |
+          artifactName=$(ls *.jar | head -1)
+          mvn deploy -DskipMunitTests -DmuleDeploy \
+           -Dmule.artifact=$artifactName \
+           -Danypoint.username="$USERNAME" \
+           -Danypoint.password="$PASSWORD" \
+           -Dorg.client.id="$ORGID" \
+           -Dorg.client.secret="$ORGSECRET" \
+           -Dmule.workers="1" \
+           -Dmule.env="dev" \
+           -Dmule.workerType="Micro" \
+           -Dapplication.name="$REPO_NAME" \
+           -Dmule.region=us-east-2 \
+           -Dmule.encryptionKey="$KEY"
