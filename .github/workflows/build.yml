@@ -25,6 +25,12 @@ jobs:
             echo "CHKOUT_BRANCH=${{ github.ref }}" >> $GITHUB_ENV
           fi
 
+      - name: Echo CHKOUT_BRANCH
+        run: |
+          echo "Github Ref: ${{ github.ref }}"
+          echo "Github Action: ${{ github.event.action }}"
+          echo "Event type: $CHKOUT_BRANCH"
+
       - name: Checkout this repo
         uses: actions/checkout@v3
         env:
