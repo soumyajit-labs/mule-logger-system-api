@@ -178,7 +178,7 @@ output application/json
 }]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-		<logger level="INFO" doc:name="INFO - vars.securedprops" doc:id="b20fccfb-0be0-4d2e-b5e5-3557f240de78" message='vars.securedprops : #[vars.securedprops]' category="com.galactica.logger" />
+		<logger level="INFO" doc:name="INFO - vars.securedprops" doc:id="b20fccfb-0be0-4d2e-b5e5-3557f240de78" message='Printing the vars.securedprops : #[vars.securedprops]' category="com.galactica.logger" />
 		<logger level="DEBUG" doc:name="DEBUG - Response logger" doc:id="86fdb4d0-c907-4d29-b147-cc0b8474f31a" message="Response Payload : #[payload default []]" category="com.galactica.logger" />
 		<logger level="INFO" doc:name="INFO - Ending Logger" doc:id="417c91d6-703c-4bbd-98e4-0d4dc5f69b96" message='#["This is the ending INFO logger for GET:/accounts flow."]' category="com.galactica.logger" />
     </flow>
