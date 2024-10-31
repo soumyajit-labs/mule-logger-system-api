@@ -17,6 +17,21 @@ jobs:
   build-validate-and-deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Checkout Branch Ref
+        run: |
+          if [[ "${{ github.event_name }}" == "repository_dispatch" ]]; then
+            echo "CHKOUT_BRANCH=${{ github.event.action }}" >> $GITHUB_ENV
+          else
+            echo "CHKOUT_BRANCH=${{ github.ref }}" >> $GITHUB_ENV
+          fi
+
+      - name: Checkout this repo
+        uses: actions/checkout@v3
+        env:
+          BRANCH_NAME: feature-branch
+        with:
+          ref: ${{ env.CHKOUT_BRANCH }}
+
       - name: Set Environment Variable
         run: |
           if [[ "${{ github.event_name }}" == "repository_dispatch" ]]; then
@@ -29,13 +44,6 @@ jobs:
             echo "ENVIRONMENT=feature" >> $GITHUB_ENV
           fi
           
-      - name: Checkout this repo
-        uses: actions/checkout@v3
-        env:
-          BRANCH_NAME: feature-branch
-        with:
-          ref: ${{ env.BRANCH_NAME }}
-        
       - name: Set Repository Name
         run: |
           REPO=$(echo ${GITHUB_REPOSITORY} | awk -F '/' '{print $NF}')
