@@ -85,7 +85,7 @@ jobs:
           artifactName2=$(ls target/*.jar | head -1 | sed "s/.jar/-$commitHash.jar/g")
           mv $artifactName1 $artifactName2
           
-      - name: Deploy to DEV
+      - name: Deploy to Anypoint Platform
         env:
           USERNAME: ${{ secrets.CONNECTEDAPPUSER }}
           PASSWORD: ${{ secrets.CONNECTEDAPPPASS }}
@@ -101,7 +101,7 @@ jobs:
            -Dorg.client.id="$ORGID" \
            -Dorg.client.secret="$ORGSECRET" \
            -Dmule.workers="1" \
-           -Dmule.env="dev" \
+           -Dmule.env="$ENVIRONMENT" \
            -Dmule.workerType="Micro" \
            -Dapplication.name="$REPO_NAME" \
            -Dmule.region=us-east-2 \
