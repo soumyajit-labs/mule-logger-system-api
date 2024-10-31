@@ -20,16 +20,10 @@ jobs:
       - name: Set Checkout Branch Ref
         run: |
           if [[ "${{ github.event_name }}" == "repository_dispatch" ]]; then
-            echo "CHKOUT_BRANCH=${{ github.event.action }}" >> $GITHUB_ENV
+            echo "CHKOUT_BRANCH=refs/heads/${{ github.event.action }}" >> $GITHUB_ENV
           else
             echo "CHKOUT_BRANCH=${{ github.ref }}" >> $GITHUB_ENV
           fi
-
-      - name: Echo CHKOUT_BRANCH
-        run: |
-          echo "Github Ref: ${{ github.ref }}"
-          echo "Github Action: ${{ github.event.action }}"
-          echo "Event type: $CHKOUT_BRANCH"
 
       - name: Checkout this repo
         uses: actions/checkout@v3
